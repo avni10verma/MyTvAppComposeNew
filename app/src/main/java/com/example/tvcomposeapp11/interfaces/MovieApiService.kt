@@ -37,11 +37,11 @@ interface MovieApiService {
     @GET("search/movie")
     suspend fun searchMovies(@Query("query") query: String) : SearchResponse
 
-    companion object {
-        fun create(): MovieApiService {
-            return RetrofitInstance.api.create(MovieApiService::class.java)
-        }
-    }
+//    companion object {
+//        fun create(): MovieApiService {
+//            return RetrofitInstance.api.create(MovieApiService::class.java)
+//        }
+//    }
 }
 
 

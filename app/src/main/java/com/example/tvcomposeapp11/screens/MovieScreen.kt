@@ -9,21 +9,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tvcomposeapp11.MovieViewModel
-import com.example.tvcomposeapp11.MovieViewModelFactory
-import com.example.tvcomposeapp11.interfaces.MovieApiService
-import com.example.tvcomposeapp11.repository.MovieRepositoryImpl
+
 
 @Composable
 fun MoviesScreen(navController: NavHostController) {
 
 
-    val repository = MovieRepositoryImpl(MovieApiService.create())
-    val viewModel: MovieViewModel = viewModel(
-        factory = MovieViewModelFactory(repository)
-    )
+    val viewModel: MovieViewModel = hiltViewModel()
     val movies by viewModel.movies.observeAsState(emptyList())
 
     val otherCategories = movies.filterIndexed { index, _ -> index != 1 }

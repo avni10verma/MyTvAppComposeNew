@@ -5,19 +5,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.tvcomposeapp11.MovieViewModel
-import com.example.tvcomposeapp11.MovieViewModelFactory
-import com.example.tvcomposeapp11.interfaces.MovieApiService
-import com.example.tvcomposeapp11.repository.MovieRepositoryImpl
+
 
 @Composable
 fun  FavouriteScreen(navController: NavController){
-    val repository = MovieRepositoryImpl(MovieApiService.create())
-    val viewModel: MovieViewModel = viewModel(
-        factory = MovieViewModelFactory(repository)
-    )
+    val viewModel: MovieViewModel = hiltViewModel()
 
     val favourites by viewModel.favourites.observeAsState(emptyList())
 

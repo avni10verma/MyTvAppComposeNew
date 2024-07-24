@@ -9,9 +9,10 @@ import kotlinx.coroutines.coroutineScope
 import com.example.mytvappcompose.model.MovieResult
 import com.example.tvcomposeapp11.interfaces.MovieApiService
 import com.example.tvcomposeapp11.interfaces.MovieRepository
+import javax.inject.Inject
 
 
-class MovieRepositoryImpl(private val tmdbService: MovieApiService) : MovieRepository {
+class MovieRepositoryImpl @Inject constructor(private val tmdbService: MovieApiService) : MovieRepository {
 
     private val _movies = MutableLiveData<List<List<MovieResult>>>()
     override val movies: LiveData<List<List<MovieResult>>> get() = _movies

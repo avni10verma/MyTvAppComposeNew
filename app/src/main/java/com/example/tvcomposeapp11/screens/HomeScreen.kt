@@ -61,12 +61,13 @@ import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.example.mytvappcompose.model.MovieResult
 import com.example.tvcomposeapp11.MovieViewModel
-import com.example.tvcomposeapp11.MovieViewModelFactory
 import com.example.tvcomposeapp11.ScreenWithTopBar
 import com.example.tvcomposeapp11.interfaces.MovieApiService
 import com.example.tvcomposeapp11.interfaces.RetrofitInstance
 import com.example.tvcomposeapp11.repository.MovieRepositoryImpl
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,10 +75,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 fun HomeScreen(navController: NavHostController) {
     ScreenWithTopBar(navController = navController) {
 
-        val repository = MovieRepositoryImpl(MovieApiService.create())
-        val viewModel: MovieViewModel = viewModel(
-            factory = MovieViewModelFactory(repository)
-        )
+        val viewModel: MovieViewModel = hiltViewModel()
         val homeFocusRequester = remember { FocusRequester() }
 
         val movies by viewModel.movies.observeAsState(emptyList())

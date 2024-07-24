@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -92,7 +94,12 @@ dependencies {
     implementation ("androidx.media3:media3-session:1.3.1")
     implementation ("androidx.media3:media3-exoplayer-hls:1.1.1")
 
+//hilt
 
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
 
 }

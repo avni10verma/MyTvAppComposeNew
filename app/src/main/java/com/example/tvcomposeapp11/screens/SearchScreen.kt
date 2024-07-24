@@ -18,25 +18,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.mytvappcompose.model.MovieResult
 import com.example.tvcomposeapp11.MovieViewModel
-import com.example.tvcomposeapp11.MovieViewModelFactory
-import com.example.tvcomposeapp11.interfaces.MovieApiService
-import com.example.tvcomposeapp11.repository.MovieRepositoryImpl
+
 
 
 @Composable
 fun SearchScreen(navController: NavHostController) {
 
 
-    val repository = MovieRepositoryImpl(MovieApiService.create())
-    val viewModel: MovieViewModel = viewModel(
-        factory = MovieViewModelFactory(repository)
-    )
+    val viewModel: MovieViewModel = hiltViewModel()
 
 
     val movies by viewModel.movies.observeAsState(emptyList())

@@ -49,10 +49,10 @@ fun NavGraph(navController: NavHostController) {
             val posterPath = backStackEntry.arguments?.getString("posterPath") ?: ""
             val title = backStackEntry.arguments?.getString("title") ?: ""
             val overview = backStackEntry.arguments?.getString("overview") ?: ""
-            DetailScreen(navController, posterPath, title, overview)
+           DetailScreen(navController, posterPath, title, overview)
         }
         composable("videoPlayer") {
-            VideoPlayerScreen(navController)
+           VideoPlayerScreen(navController)
         }
 
 

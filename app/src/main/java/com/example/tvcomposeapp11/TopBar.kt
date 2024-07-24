@@ -20,6 +20,8 @@ fun TopBar(navController: NavController) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabTitles = listOf("Home", "Favorites", "Movies", "Apps")
     val tabRoutes = listOf("Home screen", "favourites", "movies", "apps")
+
+
     // Create FocusRequester for the Home tab
     val homeFocusRequester = remember { FocusRequester() }
 
