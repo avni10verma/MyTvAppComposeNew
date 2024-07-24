@@ -1,0 +1,30 @@
+ Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))
+                       Button(
+                           modifier = Modifier.size(width = 100.dp, height = 35.dp),
+                           colors = ButtonDefaults.buttonColors(Color.LightGray.copy(alpha = 0.5f)),
+                           shape = RoundedCornerShape(8.dp),
+                           onClick = { viewModel.addFavourite(movie)},
+                       ) {
+
+                           Row(
+                               modifier = Modifier.fillMaxWidth(),
+                               horizontalArrangement = Arrangement.SpaceEvenly,
+                               verticalAlignment = Alignment.CenterVertically
+                           ) {
+                               Icon(
+                                   imageVector = Icons.Default.Favorite,
+                                   contentDescription = "",
+                                   tint = Color.White // Set the icon color to white
+                               )
+
+                               // Add some space between the icon and text
+
+                               Text(
+                                   text = "Like",
+                                   fontSize = 10.sp,
+                                   color = Color.White // Set the text color to white
+                               )
+                           }
+
+
+                       }

@@ -51,6 +51,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,7 +78,7 @@ fun HomeScreen(navController: NavHostController) {
         val viewModel: MovieViewModel = viewModel(
             factory = MovieViewModelFactory(repository)
         )
-
+        val homeFocusRequester = remember { FocusRequester() }
 
         val movies by viewModel.movies.observeAsState(emptyList())
 
@@ -102,9 +103,10 @@ fun HomeScreen(navController: NavHostController) {
         ) {
             item {
                 HorizontalPager(modifier = Modifier
-                    .padding(10.dp),
+                    .padding(10.dp)
+                    .focusRequester(homeFocusRequester),
                     state = pagerState) { page ->
-                    TopRatedMoviePage(movie = topRatedMovies[page],navController,viewModel)
+                    TopRatedMoviePage(movie = topRatedMovies[page],navController,viewModel,homeFocusRequester)
 
                 }
             }
@@ -114,13 +116,18 @@ fun HomeScreen(navController: NavHostController) {
             }
         }
 
+
+
     }
 }
 
 @Composable
-fun TopRatedMoviePage(movie : MovieResult,navController: NavHostController,viewModel: MovieViewModel) {
+fun TopRatedMoviePage(movie : MovieResult,navController: NavHostController,viewModel: MovieViewModel,homeFocusRequester: FocusRequester) {
 
     val isFocused = remember { mutableStateOf(false)}
+
+
+    val lazyRowFocusRequester = remember { FocusRequester() }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -149,23 +156,30 @@ fun TopRatedMoviePage(movie : MovieResult,navController: NavHostController,viewM
                     text = movie.title,
                     style = MaterialTheme.typography.bodyMedium)
 
-                Box(
-                    modifier = Modifier
-                        .focusable()
-                        .onFocusChanged { focusState ->
-                            isFocused.value = focusState.isFocused
 
-                        }
-                        .border(
-                            width = if (isFocused.value) 2.dp else 0.dp,
-                            color = if (isFocused.value) Color.Blue else Color.Transparent
-                        )
-                ) {
-                   Row(
+                     Button(
+                           modifier = Modifier.size(width = 100.dp, height = 35.dp)
+                               .onFocusChanged { focusState ->
+                               isFocused.value = focusState.isFocused }
+                               .focusable()
+                               .focusRequester(lazyRowFocusRequester)
+                               .border(
+                                   width = if (isFocused.value) 2.dp else 0.dp,
+                                   color = if (isFocused.value) Color.Blue else Color.Transparent
+                               )
 
-                   ) {
-                       Button(
-                           modifier = Modifier.size(width = 100.dp, height = 35.dp),
+
+                               .onKeyEvent {
+                                       if (it.nativeKeyEvent.keyCode == android.view.KeyEvent.KEYCODE_DPAD_DOWN && it.nativeKeyEvent.action == android.view.KeyEvent.ACTION_DOWN) {
+                                           lazyRowFocusRequester.requestFocus()
+                                           true
+                                       }
+
+                                       else  false
+
+
+                               },
+
                            colors = ButtonDefaults.buttonColors(Color.LightGray.copy(alpha = 0.5f)),
                            shape = RoundedCornerShape(8.dp),
                            onClick = { Log.d("TopRatedMoviePage", "Navigating to detail: ${movie.poster_path}, ${movie.title}, ${movie.overview}")
@@ -177,36 +191,8 @@ fun TopRatedMoviePage(movie : MovieResult,navController: NavHostController,viewM
                                fontSize = 10.sp)
 
                        }
-                       Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))
-                       Button(
-                           modifier = Modifier.size(width = 100.dp, height = 35.dp),
-                           colors = ButtonDefaults.buttonColors(Color.LightGray.copy(alpha = 0.5f)),
-                           shape = RoundedCornerShape(8.dp),
-                           onClick = { viewModel.addFavourite(movie)},
-                       ) {
-
-                           Row(
-                               modifier = Modifier.fillMaxWidth(),
-                               horizontalArrangement = Arrangement.SpaceEvenly,
-                               verticalAlignment = Alignment.CenterVertically
-                           ) {
-                               Icon(
-                                   imageVector = Icons.Default.Favorite,
-                                   contentDescription = "",
-                                   tint = Color.White // Set the icon color to white
-                               )
-
-                               // Add some space between the icon and text
-
-                               Text(
-                                   text = "Like",
-                                   fontSize = 10.sp,
-                                   color = Color.White // Set the text color to white
-                               )
-                           }
 
 
-                       }
                    }
 
                 }
@@ -220,8 +206,9 @@ fun TopRatedMoviePage(movie : MovieResult,navController: NavHostController,viewM
 
 
 
-    }
-}
+
+
+
 
 @Composable
 fun MovieCategorySection(categoryMovies:List<MovieResult>, index: Int,navController: NavHostController){
@@ -244,9 +231,11 @@ fun MovieCategorySection(categoryMovies:List<MovieResult>, index: Int,navControl
 
 
         )
+
+        val lazyRowFocusRequester = remember { FocusRequester() }
         LazyRow(modifier = Modifier
             .padding(15.dp)
-
+            .focusRequester(lazyRowFocusRequester)
             .fillMaxWidth()){
             items(categoryMovies){ movie->
                 MovieItem(movie = movie, onClick = { navController.navigate("detail/${Uri.encode(movie.poster_path)}/${movie.title}/${movie.overview}") })

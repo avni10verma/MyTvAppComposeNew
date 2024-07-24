@@ -79,7 +79,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-coil:0.10.0")
 
     // viewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    //implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
     //navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -91,4 +91,8 @@ dependencies {
     implementation ("androidx.media3:media3-common:1.3.1")
     implementation ("androidx.media3:media3-session:1.3.1")
     implementation ("androidx.media3:media3-exoplayer-hls:1.1.1")
+
+
+
+
 }
